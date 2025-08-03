@@ -1,26 +1,162 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap');
+
+/* Define CSS Variables for Consistency */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --primary: #0f172a; /* slate-950 */
+  --secondary: #1e293b; /* slate-800 */
+  --accent: #38bdf8; /* sky-400 */
+  --highlight: #10b981; /* emerald-500 */
+  --text-light: #f1f5f9; /* slate-100 */
+  --text-muted: #94a3b8; /* slate-400 */
+  --gradient: linear-gradient(135deg, #1e3a8a, #6b21a8, #0ea5e9); /* indigo-900, purple-900, sky-500 */
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Base Styles */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Inter', sans-serif;
+  @apply bg-[var(--primary)] text-[var(--text-light)] antialiased;
+}
+
+/* Typography */
+h1 {
+  @apply text-4xl sm:text-5xl md:text-6xl font-bold text-[var(--accent)];
+}
+h2 {
+  @apply text-3xl sm:text-4xl font-semibold text-[var(--accent)];
+}
+h3 {
+  @apply text-2xl sm:text-3xl font-semibold text-[var(--accent)];
+}
+h4 {
+  @apply text-xl sm:text-2xl font-medium text-[var(--accent)];
+}
+h5, h6 {
+  @apply text-lg sm:text-xl font-medium text-[var(--accent)];
+}
+
+/* Section Styles */
+.section-title {
+  @apply text-3xl sm:text-4xl font-semibold text-[var(--accent)] border-b-4 border-[var(--highlight)] mb-8 pb-3 tracking-tight;
+}
+
+.section-padding {
+  @apply py-16 px-6 sm:px-10 md:px-12 bg-[var(--secondary)] rounded-2xl shadow-2xl;
+}
+
+/* Buttons */
+.btn-primary {
+  @apply bg-[var(--highlight)] text-[var(--primary)] font-semibold py-3 px-6 rounded-full hover:bg-emerald-400 transition-all duration-300 shadow-lg focus:outline-none focus:ring-4 transform hover:scale-105 custom-hover-shadow;
+}
+
+.btn-outline {
+  @apply border-2 border-[var(--accent)] text-[var(--accent)] font-semibold py-3 px-6 rounded-full hover:bg-[var(--accent)] hover:text-[var(--primary)] transition-all duration-300 shadow-md focus:outline-none focus:ring-4 transform hover:scale-105 custom-hover-shadow-accent;
+}
+
+.btn-disabled {
+  @apply bg-[var(--text-muted)] text-slate-600 font-semibold py-3 px-6 rounded-full opacity-60 cursor-not-allowed;
+}
+
+/* Links */
+.text-link {
+  @apply text-[var(--accent)] relative inline-block;
+}
+.text-link::after {
+  content: '';
+  @apply absolute bottom-0 left-0 h-0.5 bg-[var(--highlight)] w-0 transition-all duration-300;
+}
+.text-link:hover::after {
+  @apply w-full;
+}
+
+/* Cards */
+.card {
+  @apply bg-[var(--secondary)] rounded-2xl p-6 shadow-lg transition-all duration-300 transform hover:-translate-y-1 custom-hover-shadow-accent;
+}
+
+/* Code Blocks */
+.code-block {
+  font-family: 'Fira Code', monospace;
+  @apply bg-[var(--secondary)] text-green-400 p-5 rounded-xl shadow-inner text-sm relative overflow-hidden;
+}
+.code-block::before {
+  content: '';
+  @apply absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[var(--highlight)] to-[var(--accent)];
+}
+
+/* Animations */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse-glow {
+  0% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 20px 5px rgba(16, 185, 129, 0.6);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.animate-scale-in {
+  animation: scale-in 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s infinite;
+}
+
+/* Utility Classes */
+.delay-150 { animation-delay: 150ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-500 { animation-delay: 500ms; }
+.delay-700 { animation-delay: 700ms; }
+
+/* Glassmorphism */
+.glass {
+  @apply bg-white/10 backdrop-blur-lg border border-white/20;
+}
+
+/* Custom Utilities */
+@layer utilities {
+  .custom-hover-shadow:hover {
+    box-shadow: 0 4px 20px rgba(16, 185, 129, 0.5); /* emerald */
+  }
+
+  .custom-hover-shadow-accent:hover {
+    box-shadow: 0 4px 20px rgba(56, 189, 248, 0.4); /* sky */
+  }
 }
