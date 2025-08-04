@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [activeSection, setActiveSection] = useState<string>("");
   const drawerRef = useRef<HTMLDivElement>(null);
 
   const navLinks = [
@@ -39,6 +40,27 @@ export default function Navbar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isOpen]);
 
+  // Set active section on scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = document.querySelectorAll("section[id]");
+      let currentSectionId = "";
+      sections.forEach((section) => {
+        const sectionTop = section.getBoundingClientRect().top;
+        if (sectionTop <= 150 && sectionTop >= -150) {
+          currentSectionId = section.id;
+        }
+      });
+      setActiveSection(`#${currentSectionId}`);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    handleScroll(); // Set initial active section on page load
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const combinedLinks = [...navLinks, ...moreLinks];
+
   return (
     <nav className="bg-[var(--primary)] text-white fixed top-0 w-full z-50 shadow-lg">
       <div className="container mx-auto px-6 max-w-7xl">
@@ -56,7 +78,11 @@ export default function Navbar() {
               <Link
                 key={link.name}
                 href={link.href}
-                className="text-lg font-semibold hover:text-[var(--highlight)] transition duration-300"
+                className={`text-lg font-semibold transition duration-300 ${
+                  activeSection === link.href
+                    ? "text-[var(--highlight)] border-b-2 border-[var(--highlight)]"
+                    : "hover:text-[var(--highlight)]"
+                }`}
               >
                 {link.name}
               </Link>
@@ -64,10 +90,20 @@ export default function Navbar() {
 
             {/* More Dropdown */}
             <div className="relative group">
-              <button className="text-lg font-semibold hover:text-[var(--highlight)] transition flex items-center gap-1 focus:outline-none focus:ring-2 focus:ring-[var(--highlight)] rounded">
+              <button
+                className={`text-lg font-semibold transition flex items-center gap-1 focus:outline-none focus:ring-2 rounded ${
+                  moreLinks.some((link) => activeSection === link.href)
+                    ? "text-[var(--highlight)]"
+                    : "hover:text-[var(--highlight)]"
+                }`}
+              >
                 More
                 <svg
-                  className="w-4 h-4 text-[var(--highlight)] group-hover:text-amber-400 transition-transform duration-200"
+                  className={`w-4 h-4 text-[var(--highlight)] group-hover:text-amber-400 transition-transform duration-200 ${
+                    moreLinks.some((link) => activeSection === link.href)
+                      ? "rotate-180"
+                      : ""
+                  }`}
                   fill="none"
                   stroke="currentColor"
                   strokeWidth={2}
@@ -86,7 +122,11 @@ export default function Navbar() {
                   <Link
                     key={link.name}
                     href={link.href}
-                    className="block px-6 py-3 hover:bg-[var(--highlight)] hover:text-white transition"
+                    className={`block px-6 py-3 transition ${
+                      activeSection === link.href
+                        ? "bg-[var(--highlight)] text-white"
+                        : "hover:bg-[var(--highlight)] hover:text-white"
+                    }`}
                   >
                     {link.name}
                   </Link>
@@ -148,25 +188,15 @@ export default function Navbar() {
 
           {/* Main Links */}
           <nav className="flex flex-col space-y-4 overflow-y-auto scrollbar-thin scrollbar-thumb-[var(--highlight)] scrollbar-track-transparent pr-1">
-            {navLinks.map((link) => (
+            {combinedLinks.map((link) => (
               <Link
                 key={link.name}
                 href={link.href}
-                className="text-white text-xl font-semibold px-3 py-3 rounded-md hover:bg-[var(--highlight)] hover:scale-105 transition-transform duration-200"
-                onClick={() => setIsOpen(false)}
-              >
-                {link.name}
-              </Link>
-            ))}
-
-            <hr className="border-gray-700 my-4" />
-
-            {/* More Links */}
-            {moreLinks.map((link) => (
-              <Link
-                key={link.name}
-                href={link.href}
-                className="text-white text-lg px-3 py-2 rounded-md hover:bg-[var(--highlight)] hover:scale-105 transition-transform duration-200"
+                className={`text-white text-xl font-semibold px-3 py-3 rounded-md hover:bg-[var(--highlight)] hover:scale-105 transition-transform duration-200 ${
+                  activeSection === link.href
+                    ? "bg-[var(--highlight)] scale-105"
+                    : ""
+                }`}
                 onClick={() => setIsOpen(false)}
               >
                 {link.name}

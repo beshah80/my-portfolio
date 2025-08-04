@@ -56,18 +56,10 @@ export default function SkillsSection() {
           ].map(({ title, skills, note }, index) => (
             <div
               key={title}
-              className="bg-white/10 backdrop-blur-md border border-indigo-600 rounded-2xl p-6 shadow-lg"
-              style={{
-                animation: "scaleIn 0.4s cubic-bezier(0.4,0,0.2,1) forwards",
-                animationDelay: `${index * 150}ms`,
-                opacity: 0,
-                transform: "scale(0.95)",
-              }}
-              onAnimationEnd={(e) => {
-                // Fix for opacity and transform after animation
-                (e.currentTarget as HTMLDivElement).style.opacity = "1";
-                (e.currentTarget as HTMLDivElement).style.transform = "none";
-              }}
+              className={`bg-white/10 backdrop-blur-md border border-indigo-600 rounded-2xl p-6 shadow-lg opacity-0 scale-95 animate-scaleIn animation-delay-${
+                index * 150
+              }`}
+              style={{ animationFillMode: "forwards" }}
             >
               <h4 className="text-2xl font-semibold mb-6 text-indigo-300 border-b border-indigo-400 pb-3">
                 {title}
@@ -104,6 +96,24 @@ export default function SkillsSection() {
             opacity: 1;
             transform: scale(1);
           }
+        }
+        .animate-scaleIn {
+          animation-name: scaleIn;
+          animation-duration: 0.4s;
+          animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+          animation-fill-mode: forwards;
+        }
+        .animation-delay-0 {
+          animation-delay: 0ms;
+        }
+        .animation-delay-150 {
+          animation-delay: 150ms;
+        }
+        .animation-delay-300 {
+          animation-delay: 300ms;
+        }
+        .animation-delay-450 {
+          animation-delay: 450ms;
         }
       `}</style>
     </section>

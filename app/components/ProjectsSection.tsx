@@ -153,7 +153,7 @@ export default function ProjectsSection() {
     >
       <div className="container mx-auto px-4">
         <div className="text-center mb-10 max-w-3xl mx-auto">
-          <h2 className="section-title text-indigo-300 drop-shadow-md">
+          <h2 className="text-4xl font-bold text-indigo-300 mb-4 drop-shadow-md">
             Projects
           </h2>
           <p className="text-lg md:text-xl text-indigo-200">
@@ -163,24 +163,16 @@ export default function ProjectsSection() {
         </div>
 
         {/* Filters */}
-        <div className="flex flex-wrap gap-5 justify-center mb-12">
+        <div className="flex flex-wrap gap-4 justify-center mb-12">
           {filters.map((f) => (
             <button
               key={f}
               onClick={() => setFilter(f)}
-              className={`
-                px-6 py-2 rounded-full font-semibold text-sm sm:text-base
-                transition-all duration-300 ease-in-out
-                focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-400
-                cursor-pointer
-                ${
-                  filter === f
-                    ? "bg-indigo-400 text-indigo-900 shadow-lg shadow-indigo-400/70"
-                    : "bg-indigo-800 text-indigo-200 border border-indigo-600 hover:bg-indigo-400 hover:text-indigo-900 hover:shadow-md hover:shadow-indigo-400/50"
-                }
-                transform hover:scale-105
-              `}
-              aria-pressed={filter === f}
+              className={`px-5 py-2 rounded-full font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-400 ${
+                filter === f
+                  ? "bg-indigo-400 text-indigo-900 shadow-md shadow-indigo-400/70"
+                  : "bg-indigo-800 text-indigo-200 border border-indigo-600 hover:bg-indigo-400 hover:text-indigo-900 hover:shadow-sm"
+              }`}
             >
               {f}
             </button>
@@ -192,16 +184,8 @@ export default function ProjectsSection() {
           {filteredProjects.map((project, idx) => (
             <article
               key={project.title}
-              tabIndex={0}
-              aria-label={`Project: ${project.title}`}
-              className={`
-                bg-white/10 backdrop-blur-md border border-indigo-600 rounded-2xl shadow-lg
-                overflow-hidden
-                hover:shadow-indigo-500/50 hover:-translate-y-2
-                transition-transform duration-300
-                animate-fade-in-scale
-                `}
-              style={{ animationDelay: `${idx * 150}ms` }}
+              className="bg-white/10 backdrop-blur-md border border-indigo-600 rounded-2xl shadow-lg hover:shadow-indigo-500/50 hover:-translate-y-2 transition-all duration-300 animate-fade-in-scale"
+              style={{ animationDelay: `${idx * 100}ms` }}
             >
               <div className="relative w-full h-52">
                 <Image
@@ -209,18 +193,17 @@ export default function ProjectsSection() {
                   alt={project.title}
                   fill
                   className="object-cover rounded-t-2xl"
-                  priority={false}
                 />
               </div>
-              <div className="p-6 text-indigo-100">
-                <h3 className="text-2xl font-semibold mb-3 text-indigo-300 drop-shadow-md">
+              <div className="p-6">
+                <h3 className="text-xl font-semibold mb-2 text-indigo-200">
                   {project.title}
                 </h3>
-                <p className="mb-4 text-indigo-200">{project.description}</p>
-                <p className="mb-6 font-medium text-indigo-400">
-                  <strong>Tech Stack:</strong> {project.tech.join(", ")}
+                <p className="mb-3 text-indigo-100">{project.description}</p>
+                <p className="mb-5 text-sm text-indigo-300">
+                  <strong>Tech:</strong> {project.tech.join(", ")}
                 </p>
-                <div className="flex flex-wrap gap-4">
+                <div className="flex flex-wrap gap-3">
                   {project.deployed ? (
                     <>
                       {project.github && (
@@ -228,7 +211,7 @@ export default function ProjectsSection() {
                           href={project.github}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="btn-primary px-5 py-2 rounded-md font-semibold text-white transition transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2"
+                          className="bg-indigo-500 hover:bg-indigo-400 text-white px-4 py-2 rounded-md font-medium text-sm shadow hover:shadow-md transition"
                         >
                           View Code
                         </a>
@@ -238,21 +221,16 @@ export default function ProjectsSection() {
                           href={project.live}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="btn-outline-accent px-5 py-2 rounded-md font-semibold transition transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2"
+                          className="border border-indigo-300 text-indigo-100 hover:bg-indigo-300 hover:text-indigo-900 px-4 py-2 rounded-md font-medium text-sm transition"
                         >
                           Live Demo
                         </a>
                       )}
                     </>
                   ) : (
-                    <button
-                      className="btn-disabled cursor-not-allowed px-5 py-2 rounded-md font-semibold"
-                      disabled
-                      aria-disabled="true"
-                      title="Project in progress"
-                    >
+                    <span className="bg-indigo-700 text-indigo-300 px-4 py-2 rounded-md text-sm font-semibold cursor-not-allowed">
                       In Progress
-                    </button>
+                    </span>
                   )}
                 </div>
               </div>
@@ -261,7 +239,7 @@ export default function ProjectsSection() {
         </div>
       </div>
 
-      {/* Animations */}
+      {/* Local animation styles */}
       <style jsx>{`
         @keyframes fadeInScale {
           0% {
